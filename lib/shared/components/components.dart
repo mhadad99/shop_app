@@ -116,7 +116,7 @@ Widget defaultFormField({
   Function? onSubmitted,
   Function? onChanged,
   Function? onTap,
-  Function? validate,
+  required validate,
   required String labelText,
   required IconData prefix,
   IconData? suffix,
@@ -129,16 +129,16 @@ Widget defaultFormField({
       onFieldSubmitted: (s) {
         onSubmitted;
       },
-      onChanged: (s) {
-        onChanged!(s);
+      onChanged: (String value) {
+        if( onChanged != null){
+          onChanged(value);
+        }
+
       },
       onTap: (){
         onTap;
       },
-      validator: (s){
-        validate!(s);
-        return null;
-      },
+      validator: validate,
       decoration: InputDecoration(
           border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
@@ -199,7 +199,7 @@ void ShowToast({
         textColor: Colors.white,
         fontSize: 16.0);
 
-enum ToastState { SUCCESS, ERROR, WAERNING }
+enum ToastState { SUCCESS, ERROR, WARNING }
 
 Color ChooseToastColor(ToastState state) {
   Color color;
@@ -211,7 +211,7 @@ Color ChooseToastColor(ToastState state) {
     case ToastState.ERROR:
       color = Colors.red;
       break;
-    case ToastState.WAERNING:
+    case ToastState.WARNING:
       color = Colors.amber;
       break;
   }
@@ -269,7 +269,7 @@ Widget buildArticleItem(article, context) => InkWell(
   ),
 );
 
-Widget articlebuilder(list, context, {issearch = false}) => ConditionalBuilder(
+Widget articleBuilder(list, context, {isSearch = false}) => ConditionalBuilder(
   condition: list.length > 0,
   builder: (context) => ListView.separated(
       physics: BouncingScrollPhysics(),
@@ -277,7 +277,7 @@ Widget articlebuilder(list, context, {issearch = false}) => ConditionalBuilder(
           buildArticleItem(list[index], context),
       separatorBuilder: (context, index) => MyDivider(),
       itemCount: list.length),
-  fallback: (context) => issearch
+  fallback: (context) => isSearch
       ? Container()
       : Center(
       child: CircularProgressIndicator(

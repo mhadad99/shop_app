@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/styles/colors.dart';
-import '../shop_login-screen.dart';
+import '../login_screen/shop_login-screen.dart';
 
 class BoardingModel {
   final String image;
@@ -50,13 +50,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-           TextButton(
-               onPressed: (){
-                 navigateAndFinish(context, const ShopLoginScreen());
-               },
-               child: const Text(
-                 "SKIP"
-               ))
+            TextButton(
+                onPressed: () {
+                  navigateAndFinish(context, ShopLoginScreen());
+                },
+                child: const Text("SKIP"))
           ],
         ),
         body: Padding(
@@ -66,17 +64,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               Expanded(
                 child: PageView.builder(
                   onPageChanged: (int index) {
-                    if (index >= boarding.length) {
-                      setState(() {
-                        isLast == true;
-                        print("first condition $isLast");
-                      });
+                    if (index == boarding.length - 1) {
+                      isLast = true;
                     } else {
-                      setState(() {
-                        isLast = false;
-                        print("second condition $isLast");
-
-                      });
+                      isLast = false;
                     }
                   },
                   physics: const BouncingScrollPhysics(),
@@ -107,7 +98,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   FloatingActionButton(
                     onPressed: () {
                       if (isLast) {
-                        navigateAndFinish(context, const ShopLoginScreen());
+                        navigateAndFinish(context, ShopLoginScreen());
                       } else {
                         boardController.nextPage(
                           duration: const Duration(

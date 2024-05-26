@@ -37,6 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.6
   smooth_page_indicator: ^1.1.0
   hexcolor: ^3.0.1
+  bloc: ^8.1.2
+  flutter_bloc: ^8.1.2
+  dio: ^5.3.2
+  conditional_builder_null_safety: ^0.0.6
 
 dev_dependencies:
   flutter_test:
