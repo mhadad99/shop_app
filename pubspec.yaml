@@ -41,11 +41,19 @@ dependencies:
   flutter_bloc: ^8.1.2
   dio: ^5.3.2
   conditional_builder_null_safety: ^0.0.6
+  fluttertoast: ^8.2.5
+  shared_preferences: ^2.0.13
+  carousel_slider: ^4.2.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.jpg"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

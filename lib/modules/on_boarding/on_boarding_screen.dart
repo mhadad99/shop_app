@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
+import 'package:shop_app/shared/network/local/cache.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/styles/colors.dart';
-import '../login_screen/shop_login-screen.dart';
+import '../login_screen/shop_login_screen.dart';
 
 class BoardingModel {
   final String image;
@@ -27,35 +26,37 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   List<BoardingModel> boarding = [
     BoardingModel(
-      image: "assets/images/onboarding_image.png",
-      title: "OnBoard Screen 1 Title",
-      body: "OnBoard Screen 1 Body",
+      image: "assets/images/onboarding_image_1.png",
+      title: "Online Shopping",
+      body: "Shopping What You Want",
     ),
     BoardingModel(
-      image: "assets/images/onboarding_image.png",
-      title: "OnBoard Screen 2 Title",
-      body: "OnBoard Screen 2 Body",
+      image: "assets/images/onboarding_image_2.png",
+      title: "Special Discount",
+      body: "Discounts Until 50%",
     ),
     BoardingModel(
-      image: "assets/images/onboarding_image.png",
-      title: "OnBoard Screen 3 Title",
-      body: "OnBoard Screen 3 Body",
+      image: "assets/images/onboarding_image_3.png",
+      title: "Brand New Tech",
+      body: "More Tech In Our Store",
     ),
   ];
 
   bool isLast = false;
 
+  void submit() {
+    CacheHelper.saveData(key: 'onBoarding', value: true).then((onValue) {
+      if (onValue) {
+        navigateAndFinish(context, ShopLoginScreen());
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          actions: [
-            TextButton(
-                onPressed: () {
-                  navigateAndFinish(context, ShopLoginScreen());
-                },
-                child: const Text("SKIP"))
-          ],
+          actions: [TextButton(onPressed: submit, child: const Text("SKIP"))],
         ),
         body: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -98,7 +99,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   FloatingActionButton(
                     onPressed: () {
                       if (isLast) {
-                        navigateAndFinish(context, ShopLoginScreen());
+                        submit();
                       } else {
                         boardController.nextPage(
                           duration: const Duration(

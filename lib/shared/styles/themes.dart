@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 
 ThemeData darkTheme = ThemeData(
-  primarySwatch: defaultColor,
+  colorScheme: ColorScheme.fromSeed(seedColor: defaultColor),
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
@@ -42,8 +41,11 @@ ThemeData darkTheme = ThemeData(
 );
 
 ThemeData lightTheme = ThemeData(
-  primarySwatch: defaultColor,
-  primaryColor: defaultColor,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.red,
+    primary: defaultColor,
+    onPrimary: Colors.green,
+  ),
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     titleSpacing: 20.0,
@@ -63,11 +65,13 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    type: BottomNavigationBarType.fixed,
+    type: BottomNavigationBarType.shifting,
     selectedItemColor: defaultColor,
-    unselectedItemColor: Colors.grey,
+    unselectedItemColor: Colors.black54,
     elevation: 20.0,
     backgroundColor: Colors.white,
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
   ),
   textTheme: const TextTheme(
     bodyLarge: TextStyle(

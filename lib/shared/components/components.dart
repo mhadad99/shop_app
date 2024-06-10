@@ -1,16 +1,19 @@
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../layout/shop_layout/cubit/cubit.dart';
+import '../styles/colors.dart';
 // import 'package:news_app_fix/modules/web_view/web_view_screen.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 
 Widget myDivider() => Padding(
-  padding: const EdgeInsetsDirectional.only(start: 20),
-  child: Container(
-    width: double.infinity,
-    height: 1,
-    color: Colors.grey[300],
-  ),
-);
+      padding: const EdgeInsetsDirectional.only(start: 20),
+      child: Container(
+        width: double.infinity,
+        height: 1,
+        color: Colors.grey[300],
+      ),
+    );
 
 // Widget buildArticleItem(article, context, {isSearch = false}) => InkWell(
 //   onTap: (){
@@ -122,20 +125,23 @@ Widget defaultFormField({
   IconData? suffix,
   bool isPassword = false,
   Function? suffixPressed,
+  bool readonly = false,
 }) =>
     TextFormField(
+      readOnly: readonly,
       controller: controller,
       keyboardType: type,
-      onFieldSubmitted: (s) {
-        onSubmitted;
+      onFieldSubmitted: (value) {
+        if (onSubmitted != null) {
+          onSubmitted(value);
+        }
       },
       onChanged: (String value) {
-        if( onChanged != null){
+        if (onChanged != null) {
           onChanged(value);
         }
-
       },
-      onTap: (){
+      onTap: () {
         onTap;
       },
       validator: validate,
@@ -153,10 +159,10 @@ Widget defaultFormField({
           ),
           suffixIcon: suffix != null
               ? IconButton(
-              onPressed: () {
-                suffixPressed!();
-              },
-              icon: Icon(suffix))
+                  onPressed: () {
+                    suffixPressed!();
+                  },
+                  icon: Icon(suffix))
               : null),
       obscureText: isPassword,
     );
@@ -175,18 +181,16 @@ Widget defaultAppbar({
       title: const Text('add post'),
     );
 
-
-
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(builder: (context) => widget),
+      context,
+      MaterialPageRoute(builder: (context) => widget),
       (Route<dynamic> route) => false,
-);
-/*
-void ShowToast({
+    );
+
+void showToast({
   required String text,
   required ToastState state,
 }) =>
@@ -195,13 +199,14 @@ void ShowToast({
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
-        backgroundColor: ChooseToastColor(state),
+        backgroundColor: chooseToastColor(state),
         textColor: Colors.white,
         fontSize: 16.0);
 
+// ignore: constant_identifier_names
 enum ToastState { SUCCESS, ERROR, WARNING }
 
-Color ChooseToastColor(ToastState state) {
+Color chooseToastColor(ToastState state) {
   Color color;
 
   switch (state) {
@@ -217,7 +222,95 @@ Color ChooseToastColor(ToastState state) {
   }
   return color;
 }
-*/
+
+Widget buildFavItem(data, context, {bool oldPrice = true}) => SizedBox(
+      width: double.infinity,
+      height: 120,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 120,
+              height: 120,
+              child:
+                  Stack(alignment: AlignmentDirectional.bottomStart, children: [
+                Image.network(
+                  data.image!,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Image(image: AssetImage('assets/images/img.png')),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                  width: 120,
+                  height: 120,
+                ),
+                if (data.discount != 0 && oldPrice)
+                  Container(
+                    color: Colors.red,
+                    padding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 5),
+                    child: const Text(
+                      'Discount',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+              ]),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.name!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Text(
+                        data.price.toString(),
+                        style: const TextStyle(
+                          color: defaultColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      if (data.discount != 0 && oldPrice)
+                        Text(data.oldPrice.toString(),
+                            style: const TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey,
+                            )),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            ShopCubit.get(context).changeFavorite(data.id!);
+                          },
+                          icon: (ShopCubit.get(context).favorites[data.id]!)
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: defaultColor,
+                                )
+                              : const Icon(Icons.favorite_border_outlined))
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
 /*
 Widget buildArticleItem(article, context) => InkWell(
   onTap: () {
