@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/layout/shop_layout/cubit/cubit.dart';
-import 'package:shop_app/layout/shop_layout/cubit/states.dart';
 import 'package:shop_app/layout/shop_layout/shop_layout.dart';
 import 'package:shop_app/modules/login_screen/shop_login_screen.dart';
 import 'package:shop_app/modules/on_boarding/on_boarding_screen.dart';
@@ -45,26 +43,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => ShopCubit()
-            ..getFavData()
-            ..getHomeData()
-            ..getCatData()
-            ..getUserData(),
-        )
-      ],
-      child: BlocConsumer<ShopCubit, ShopStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return MaterialApp(
-            theme: lightTheme,
-            debugShowCheckedModeBanner: false,
-            home: startWidget,
-          );
-        },
-      ),
+    return MaterialApp(
+      theme: lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: startWidget,
     );
   }
 }

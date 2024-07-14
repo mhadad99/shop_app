@@ -10,48 +10,59 @@ class ShopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = ShopCubit.get(context);
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Haddad Shop'),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    navigateTo(context, SearchScreen());
-                  },
-                  icon: const Icon(Icons.search))
-            ],
-          ),
-          body: cubit.bottomScreens[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: (index) {
-              cubit.changeBottomScreen(index);
-            },
-            currentIndex: cubit.currentIndex,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.grid_view),
-                label: 'Categories',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border_outlined),
-                label: 'Favourite',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                label: 'Settings',
-              ),
-            ],
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ShopCubit()
+            ..getFavData()
+            ..getHomeData()
+            ..getCatData()
+            ..getUserData(),
+        )
+      ],
+      child: BlocConsumer<ShopCubit, ShopStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = ShopCubit.get(context);
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Haddad Shop'),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      navigateTo(context, SearchScreen());
+                    },
+                    icon: const Icon(Icons.search))
+              ],
+            ),
+            body: cubit.bottomScreens[cubit.currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              onTap: (index) {
+                cubit.changeBottomScreen(index);
+              },
+              currentIndex: cubit.currentIndex,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.grid_view),
+                  label: 'Categories',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite_border_outlined),
+                  label: 'Favourite',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings_outlined),
+                  label: 'Settings',
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

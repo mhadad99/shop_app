@@ -290,17 +290,18 @@ Widget buildFavItem(data, context, {bool oldPrice = true}) => SizedBox(
                               decoration: TextDecoration.lineThrough,
                               color: Colors.grey,
                             )),
-                      const Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            ShopCubit.get(context).changeFavorite(data.id!);
-                          },
-                          icon: (ShopCubit.get(context).favorites[data.id]!)
-                              ? const Icon(
-                                  Icons.favorite,
-                                  color: defaultColor,
-                                )
-                              : const Icon(Icons.favorite_border_outlined))
+                      if (oldPrice) const Spacer(),
+                      if (oldPrice)
+                        IconButton(
+                            onPressed: () {
+                              ShopCubit.get(context).changeFavorite(data.id!);
+                            },
+                            icon: (ShopCubit.get(context).favorites[data.id]!)
+                                ? const Icon(
+                                    Icons.favorite,
+                                    color: defaultColor,
+                                  )
+                                : const Icon(Icons.favorite_border_outlined)),
                     ],
                   ),
                 ],
